@@ -1,38 +1,61 @@
-<div id="id-card"
-    style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(438px, 473px, 0px); display: none;"
-    x-placement="bottom-end">
-    <div class="idc-theme-img"
-        style="background-image: url(&quot;//i1.hdslb.com/bfs/space/cb1c3ef50e22b6096fde67febe863494caefebad.png@100Q.webp&quot;);">
-    </div>
-    <div class="idc-info clearfix"><a href="//space.bilibili.com/298919908" target="_blank" class="up-cover-components">
-            <div class="bili-avatar" style="width: 100%;height:100%;">
+<!DOCTYPE html>
+<html>
 
-                <img class="bili-avatar-img bili-avatar-face bili-avatar-img-radius"
-                    data-src="//i1.hdslb.com/bfs/face/49265f6a0c8cff9702dd0c602b630e819b5c670c.jpg@96w_96h_1c_1s_!web-avatar-space-list.avif"
-                    alt=""
-                    src="//i1.hdslb.com/bfs/face/49265f6a0c8cff9702dd0c602b630e819b5c670c.jpg@96w_96h_1c_1s_!web-avatar-space-list.avif">
+<head>
+    <meta charset="UTF-8" />
+    <title>title</title>
+    <link rel="stylesheet" href="./css/idcard.css" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Microsoft YaHei", "微软雅黑", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #313131;
+            background-color: #e9e9e9;
+        }
+    </style>
+    <script>
+        // biliVideoCard跟随鼠标移动
+        window.onload = function () {
+            var card = document.getElementById("biliVideoCard");
 
+            document.onmousemove = function (event) {
+                var x = event.clientX;
+                var y = event.clientY;
 
+                card.style.left = x + card.offsetWidth / 2 + 10 + "px";
+                card.style.top = y + card.offsetHeight / 2 + 10 + "px";
+            };
+        };
 
+    </script>
+</head>
 
-
-                <span class="bili-avatar-icon bili-avatar-right-icon  "></span>
-            </div>
-        </a>
-        <div class="idc-content">
-            <div><a href="//space.bilibili.com/298919908/" target="_blank" class="idc-username"><b title="士燮"
-                        class="idc-uname" style="color: rgb(251, 114, 153);">
-                        士燮
-                    </b></a><span class="gender idc-gender icon unknown"></span><a lvl="6"
-                    href="//www.bilibili.com/html/help.html#k" target="_blank" class="m-level idc-m-level"></a></div>
-            <div class="idc-meta"><span class="idc-meta-item">关注 21</span><span class="idc-meta-item">粉丝 26</span></div>
+<body>
+    <div id="biliVideoCard">
+        <div id="card-title">
+            <div id="title">标题</div>
+            <div id="desc">描述</div>
         </div>
-        <div class="tag-list idc-tag-list"></div>
-        <div class="idc-sign">哦哦哦哦哦哦哦啦啦啦啦啦</div>
+        <div id="card-content">
+            <div id="tag-list">
+                <div id="tag">标签1</div>
+                <div id="tag">标签2</div>
+                <div id="tag">标签3</div>
+            </div>
+            <div id="card-content-bottom">
+                <div id="view" class="card-content-bottom-detail">播放量：999999</div>
+                <div id="like" class="card-content-bottom-detail">点赞量：500</div>
+                <div id="coin" class="card-content-bottom-detail">硬币量：999999</div>
+                <div id="danmaku" class="card-content-bottom-detail">弹幕量：999999</div>
+                <div id="favorite" class="card-content-bottom-detail">收藏数：999999</div>
+                <div id="share" class="card-content-bottom-detail">分享数：999999</div>
+            </div>
+            <div id="type" >视频类型</div>
+        </div>
     </div>
-    <div data-v-1ea3cefa="" class="btn-container idc-action btn-center"><a data-v-53027a10=""
-            class="btn idc-btn primary" data-v-1ea3cefa=""><!----><span data-v-53027a10=""
-                class="btn-content">+关注</span></a><a data-v-53027a10="" class="btn idc-btn default"
-            href="//message.bilibili.com/#whisper/mid298919908/" data-v-1ea3cefa=""><!----><span data-v-53027a10=""
-                class="btn-content">发消息</span></a></div>
-</div>
+</body>
+
+</html>

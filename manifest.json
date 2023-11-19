@@ -35,7 +35,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["scripts/markScript.js"],
+      "resources": ["css/idcard.css","scripts/markScript.js"],
       "matches": ["https://*.bilibili.com/*"]
     }
   ]

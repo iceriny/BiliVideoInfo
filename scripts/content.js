@@ -30,11 +30,11 @@ async function getVideoInfo(params_bvid) {
 }
 
 // 使用 async/await 来获取 wbi_keys
-async function handleInfoWithWbi(params_bvid) {
+async function handleInfoWithWbi(targetInfo) {
     try {
         // 构建请求参数
         const params = {
-            bvid: params_bvid
+            bvid: targetInfo.videoId
             // 或者 aid: 1234567
         };
 
@@ -62,22 +62,29 @@ async function handleInfoWithWbi(params_bvid) {
 
                 const videoInfo = await response.json();
                 const videoCardInfo = {
-                    title: videoInfo.data.View.title,
-                    desc: videoInfo.data.View.desc,
+                    title: videoInfo.data.View.title,//标题
+                    desc: videoInfo.data.View.desc,//简介
                     tags: videoInfo.data.Tags.map(item =>
-                        item.tag_name),
-                    viewCount: videoInfo.data.View.stat.view,
-                    likeCount: videoInfo.data.View.stat.like,
-                    coinCount: videoInfo.data.View.stat.coin,
-                    favoriteCount: videoInfo.data.View.stat.favorite,
-                    shareCount: videoInfo.data.View.stat.share,
-                    his_rank: videoInfo.data.View.stat.his_rank,
-                    type: VIDEO_TYPE_MAP[`${videoInfo.data.View.tid}`]
+                        item.tag_name),//标签
+                    viewCount: videoInfo.data.View.stat.view,//播放量
+                    danmakuCount: videoInfo.data.View.stat.danmaku,//弹幕数
+                    likeCount: videoInfo.data.View.stat.like,//点赞量
+                    coinCount: videoInfo.data.View.stat.coin,//硬币数
+                    favoriteCount: videoInfo.data.View.stat.favorite,//收藏量
+                    shareCount: videoInfo.data.View.stat.share,//分享量
+                    type: VIDEO_TYPE_MAP[`${videoInfo.data.View.tid}`]//视频类型
                 }
-                
+                const dataObj = {
+                    videoCardInfo: videoCardInfo,
+                    targetDOMRect: targetInfo.targetDOMRect
+                }
+
                 //videoProfileCard.
                 // 视频信息处理:
-
+                if (videoProfileCard) {
+                    console.log(videoProfileCard)
+                    videoProfileCard.upDate(dataObj)
+                }
 
 
             } catch (error) {
@@ -109,14 +116,34 @@ function getVideoTarget(target) {
 
     return null; // 如果未找到符合条件的节点，则返回空
 }
-
+let hoverTimer;
 function showVideoInfo(event) {
-    let target = getVideoTarget(event.target);
-    if (target) {
-        let videoId = target.getAttribute("bliVideoInfo-videoId");
+    // 清除之前的定时器
+    clearTimeout(hoverTimer);
+    // 设置新的定时器，在1秒后调用函数
+    hoverTimer = setTimeout(() => {
+        let target = getVideoTarget(event.target);
+        if (target) {
+            let videoId = target.getAttribute("bliVideoInfo-videoId");
+            let targetDOMRect = target.getBoundingClientRect()
+            let targetInfo = {
+                videoId: videoId,
+                targetDOMRect: targetDOMRect
+            }
 
-        handleInfoWithWbi(videoId);
-    }
+            //对target注册鼠标离开事
+            target.addEventListener("mouseleave", function () {
+                // 取消注册事件
+                target.removeEventListener("mouseleave", arguments.callee);
+                // 调用禁用函数
+                videoProfileCard.disable();
+            });
+
+            handleInfoWithWbi(targetInfo);
+        }
+    }, 1000); // 设置1秒延迟
+
+
 
 }
 
@@ -134,4 +161,11 @@ window.addEventListener("load", function () {
     s.onload = function () { this.remove(); };
     // 将<script>元素添加到文档头部或文档文档根元素中
     (document.head || document.documentElement).appendChild(s);
+    /*
+        var style = document.createElement('link');
+        style.rel ='stylesheet';
+        style.href = chrome.runtime.getURL('css/idcard.css');
+        // style.onload = function () { this.remove(); };
+        (document.head || document.documentElement).appendChild(style);
+        */
 });
