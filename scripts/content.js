@@ -1,5 +1,5 @@
 const url = 'https://api.bilibili.com/x/web-interface/view';
-
+/*
 const cookies = {
     SESSDATA: 'your_sessdata_here'  // 替换为你的 SESSDATA，即登录状态的 Cookie
 };
@@ -28,6 +28,7 @@ async function getVideoInfo(params_bvid) {
         return null; // 或者返回其他你认为合适的默认值
     }
 }
+*/
 
 // 使用 async/await 来获取 wbi_keys
 async function handleInfoWithWbi(targetInfo) {
@@ -96,11 +97,6 @@ async function handleInfoWithWbi(targetInfo) {
     }
 }
 
-
-function getVideoCard(videoCardInfo) {
-
-}
-
 function getVideoTarget(target) {
     // 获取目标节点
     let maxDepth = 5; // 定义最大深度为5
@@ -161,11 +157,4 @@ window.addEventListener("load", function () {
     s.onload = function () { this.remove(); };
     // 将<script>元素添加到文档头部或文档文档根元素中
     (document.head || document.documentElement).appendChild(s);
-    /*
-        var style = document.createElement('link');
-        style.rel ='stylesheet';
-        style.href = chrome.runtime.getURL('css/idcard.css');
-        // style.onload = function () { this.remove(); };
-        (document.head || document.documentElement).appendChild(style);
-        */
 });

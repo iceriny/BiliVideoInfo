@@ -36,6 +36,9 @@ function getVideoTagsDiv(tagsList) {
     return tagsContent;
 }
 
+/**
+ * 处理与储存VideoCard的类
+ */
 class VideoProfileCard {
     constructor() {
         this.data = {};
@@ -48,14 +51,6 @@ class VideoProfileCard {
         this.el.style.position = "absolute";
         this.el.style.display = "none";
         this.el.style.zIndex = 1013
-
-        // this.el.innerHTML = getVideoCard()
-        /*
-        this.el.addEventListener("transitionend", () => {
-            this.updateCursor(this.cursorX, this.cursorY);
-            console.log("updateCursor", this.cursorX, this.cursorY);
-        });
-        */
 
         document.body.appendChild(this.el);
 
@@ -78,24 +73,19 @@ class VideoProfileCard {
 
     /**
      * 更新光标位置
-     * 
-     * @param {DOMRect} targetDOMRect DOMRect对象
+     * @param {DOMRect} targetDOMRect - 目标DOM元素的矩形信息
      */
     updateCursor(targetDOMRect) {
-        // 计算元素B的新位置
-        // 假设你想让元素B位于元素A的下方，这只是一个示例，你可能需要根据具体情况调整位置计算
-        const newTop = targetDOMRect.bottom + this.el.scrollHeight / 2 + window.scrollY  + 10; // 10是用来添加一些间距的示例值
+        const newTop = targetDOMRect.bottom + this.el.scrollHeight / 2 + window.scrollY + 10;
         const newLeft = targetDOMRect.right + 200 + window.scrollX;
 
-        // 更新元素B的位置
         this.el.style.top = `${newTop}px`;
         this.el.style.left = `${newLeft}px`;
 
-        // 避免元素B超出屏幕可视区域
+        // 边界处理
         const viewportHeight = window.innerHeight + window.scrollY;
         const viewportWidth = window.innerWidth;
 
-        // 检查是否超出屏幕高度和宽度
         if (newTop + this.el.scrollHeight > viewportHeight) {
             this.el.style.top = `${viewportHeight - this.el.scrollHeight - 20}px`;
         }
@@ -104,7 +94,6 @@ class VideoProfileCard {
             this.el.style.left = `${viewportWidth - this.el.scrollWidth - 25}px`;
         }
     }
-
 
 
     upDate(dataObj) {
