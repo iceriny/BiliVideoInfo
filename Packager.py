@@ -51,6 +51,10 @@ def zip_to_package(package_name : str):
         ".\\_locales",
     ]
     
+    folder_path = ".\\ignore\\"
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+    
     with zipfile.ZipFile(f'.\\ignore\\{package_name}.zip', 'w') as zipf:
         for path in files_list:
             if os.path.isdir(path):
