@@ -1,25 +1,27 @@
 function getVideoCard(videoData) {
     return `
     <div id="biliVideoCard">
+    <div id="video-card">
         <div id="card-title">
+            <div id="type" ><span>#</span>${videoData.type}</div>
             <div id="title">${videoData.title}</div>
             <div id="desc">${videoData.desc}</div>
         </div>
         <div id="card-content">
             <div id="tag-list">
-                ${getVideoTagsDiv(videoData.tags)}
+            ${getVideoTagsDiv(videoData.tags)}
             </div>
             <div id="card-content-bottom">
-                <div id="view" class="card-content-bottom-detail">播放量：${videoData.viewCount}</div>
-                <div id="danmaku" class="card-content-bottom-detail">弹幕量：${videoData.danmakuCount}</div>
-                <div id="like" class="card-content-bottom-detail">点赞量：${videoData.likeCount}</div>
-                <div id="coin" class="card-content-bottom-detail">硬币量：${videoData.coinCount}</div>
-                <div id="favorite" class="card-content-bottom-detail">收藏数：${videoData.favoriteCount}</div>
-                <div id="share" class="card-content-bottom-detail">分享数：${videoData.shareCount}</div>
+            <div id="view" class="card-content-bottom-detail">播放量：${videoData.viewCount}</div>
+            <div id="danmaku" class="card-content-bottom-detail">弹幕数：${videoData.danmakuCount}</div>
+            <div id="like" class="card-content-bottom-detail">点赞数：${videoData.likeCount}</div>
+            <div id="coin" class="card-content-bottom-detail">硬币数：${videoData.coinCount}</div>
+            <div id="favorite" class="card-content-bottom-detail">收藏数：${videoData.favoriteCount}</div>
+            <div id="share" class="card-content-bottom-detail">分享量：${videoData.shareCount}</div>
             </div>
-            <div id="type" >${videoData.type}</div>
         </div>
     </div>
+</div>
     `
 }
 /**

@@ -3,7 +3,6 @@
     top: 0;
     left: 0;
     width: 400px;
-    padding: 30px;
     border-radius: 15px;
     background-color: white;
     box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.221);
@@ -12,41 +11,67 @@
     transition: 0.3s ease;
 }
 
-#biliVideoCard #card-title {
+#biliVideoCard #video-card {
+    padding: 30px;
+}
+
+#biliVideoCard #video-card #card-title {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    /*align-items: flex-start;*/
     font-size: 18px;
     font-weight: bold;
     margin-bottom: 10px;
 }
 
-#biliVideoCard #title {
+#biliVideoCard #video-card #card-title #type {
+    margin-bottom: 5px;
+    text-align: right;
+    font-size: 15px;
+    font-weight: bold;
+    color: #ffb9cd;
+    /*padding: 4px 8px;*/
+    border-radius: 5px;
+}
+
+#biliVideoCard #video-card #card-title span {
+    text-align: right;
+    width: 10px;
+    height: 10px;
+    margin: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    background-color: rgb(255, 207, 14);
+    border-radius: 5px;
+}
+
+#biliVideoCard #video-card #title {
     font-size: 18px;
     line-height: 1.2;
     color: #fb7299;
 }
 
-#biliVideoCard #desc {
+#biliVideoCard #video-card #desc {
     font-size: 16px;
     color: #888;
-    padding: 5px;
+    padding: 10px;
     line-height: 1.2;
 }
 
-#biliVideoCard #card-content {
+#biliVideoCard #video-card #card-content {
     display: flex;
     flex-direction: column;
     margin-top: 10px;
 }
 
-#biliVideoCard #card-content #tag-list {
+#biliVideoCard #video-card #card-content #tag-list {
     display: flex;
     flex-wrap: wrap;
     margin-bottom: 10px;
 }
 
-#biliVideoCard #card-content #tag-list #tag {
+#biliVideoCard #video-card #card-content #tag-list #tag {
     background-color: #00aeec;
     color: white;
     padding: 4px 4px;
@@ -57,7 +82,7 @@
     font-size: 12px;
 }
 
-#biliVideoCard #card-content #card-content-bottom {
+#biliVideoCard #video-card #card-content #card-content-bottom {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -66,7 +91,7 @@
     /* 将内容推至底部 */
 }
 
-#biliVideoCard #card-content #card-content-bottom .card-content-bottom-detail {
+#biliVideoCard #video-card #card-content #card-content-bottom .card-content-bottom-detail {
     width: calc(50% - 5px);
     /* 每个元素占50%宽度，并考虑间隔 */
     /* 示例背景颜色 */
@@ -74,20 +99,4 @@
     padding: 3px;
     box-sizing: border-box;
     text-align: center;
-}
-
-#biliVideoCard #card-content #type {
-    font-size: 14px;
-    font-weight: bold;
-    color: white;
-    background-color: #fb7299;
-    padding: 4px 8px;
-    border-radius: 5px;
-    margin-bottom: 5px;
-}
-
-
-#biliVideoCard div:not(#title):not(#tag-list) {
-    font-size: 14px;
-    margin-bottom: 3px;
 }
