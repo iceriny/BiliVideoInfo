@@ -1,6 +1,8 @@
 import json
 import zipfile
 import os
+# 三方输出到剪切板块
+import pyperclip
 
 
 def set_manifest() -> str:
@@ -20,11 +22,21 @@ def set_manifest() -> str:
         data['version'] = input("请输入版本号:")
         already_edited = True
         
+    text_to_copy = f"{data['version']}\n\n{data['description']}\n\n{get_last_changelog(data)}"
+    pyperclip.copy(text_to_copy)
+    
     if already_edited:
         with open('manifest.json', 'w', encoding='utf-8') as json_file:
             json.dump(data, json_file, indent=4, ensure_ascii=False)
             
     return package_name
+
+def get_last_changelog(data) -> str:
+    changelog = data['changelog']
+    last_changelog = changelog[0]
+    
+    result = last_changelog['description']
+    return result
 
 def zip_to_package(package_name : str):
     files_list = [
