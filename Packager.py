@@ -10,9 +10,13 @@ def set_manifest() -> str:
     with open('manifest.json', 'r', encoding='utf-8') as json_file:
         data = json.load(json_file)
         
-    package_name = data['package_name']
+    with open('packagerInfo.json', 'r', encoding='utf-8') as json_file:
+        packagerInfo = json.load(json_file)    
+    
+    package_name = packagerInfo['package_name']
     
     input_text = input(f"当前简介:{data['description']}\n是否修改简介?\ny/n")
+    
     if input_text == 'y':
         data['description'] = input("请输入简介:")
         already_edited = True
@@ -22,7 +26,7 @@ def set_manifest() -> str:
         data['version'] = input("请输入版本号:")
         already_edited = True
         
-    text_to_copy = f"{data['version']}\n\n{data['description']}\n\n{get_last_changelog(data)}"
+    text_to_copy = f"{data['version']}\n\n{data['description']}\n\n{get_last_changelog(packagerInfo)}"
     pyperclip.copy(text_to_copy)
     
     if already_edited:

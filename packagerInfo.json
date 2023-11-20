@@ -1,0 +1,13 @@
+{
+    "package_name": "BiliVideoInfo",
+    "changelog": [
+      {
+        "description": "完善与优化UI",
+        "version": "0.2.0"
+      },
+      {
+        "description": "基本功能完成",
+        "version": "0.1.0"
+      }
+    ]
+}
