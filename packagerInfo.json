@@ -2,6 +2,10 @@
     "package_name": "BiliVideoInfo",
     "changelog": [
       {
+        "description": "更改Logo;  添加语言文件",
+        "version": "0.2.1"
+      },
+      {
         "description": "完善与优化UI",
         "version": "0.2.0"
       },

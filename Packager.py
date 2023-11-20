@@ -47,7 +47,8 @@ def zip_to_package(package_name : str):
         ".\\css",
         ".\\img",
         ".\\scripts",
-        ".\\manifest.json"
+        ".\\manifest.json",
+        ".\\_locales",
     ]
     
     with zipfile.ZipFile(f'.\\ignore\\{package_name}.zip', 'w') as zipf:
