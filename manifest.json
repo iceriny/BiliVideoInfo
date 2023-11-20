@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "B站视频信息",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "可以预览B站视频信息, 播放量、点赞、投币、收藏、转发、等。",
   "icons": {
     "128": "img/logo.png"
