@@ -1,42 +1,48 @@
 {
-  "manifest_version": 3,
-  "name": "B站视频信息",
-  "version": "0.2.0",
-  "description": "可以预览B站视频信息, 播放量、点赞、投币、收藏、转发、等。",
-  "icons": {
-    "128": "img/logo.png"
-  },
-  "content_scripts": [
-    {
-      "js": [
-        "scripts/content.js",
-        "scripts/bilibiliAPI.js",
-        "scripts/md5.js",
-        "scripts/constants.js",
-        "scripts/ui.js"
-      ],
-      "css": [
-        "css/idcard.css"
-      ],
-      "matches": [
-        "https://*.bilibili.com/*"
-      ],
-      "run_at": "document_start"
-    }
-  ],
-  "author": [
-    {
-      "name": "iceriny",
-      "url": "https://github.com/iceriny"
-    }
-  ],
-  "permissions": [
-    "storage"
-  ],
-  "web_accessible_resources": [
-    {
-      "resources": ["css/idcard.css","scripts/markScript.js"],
-      "matches": ["https://*.bilibili.com/*"]
-    }
-  ]
+    "manifest_version": 3,
+    "name": "B站视频信息",
+    "package_name": "BiliVideoInfo",
+    "version": "0.2.0",
+    "description": "可以预览B站视频信息, 播放量、点赞、投币、收藏、转发、等。",
+    "icons": {
+        "128": "img/logo.png"
+    },
+    "content_scripts": [
+        {
+            "js": [
+                "scripts/content.js",
+                "scripts/bilibiliAPI.js",
+                "scripts/md5.js",
+                "scripts/constants.js",
+                "scripts/ui.js"
+            ],
+            "css": [
+                "css/idcard.css"
+            ],
+            "matches": [
+                "https://*.bilibili.com/*"
+            ],
+            "run_at": "document_start"
+        }
+    ],
+    "author": [
+        {
+            "name": "iceriny",
+            "url": "https://github.com/iceriny"
+        }
+    ],
+    "permissions": [
+        "storage"
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "css/idcard.css",
+                "scripts/markScript.js"
+            ],
+            "matches": [
+                "https://*.bilibili.com/*"
+            ]
+        }
+    ]
 }
