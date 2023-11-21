@@ -17,7 +17,7 @@
                 "scripts/ui.js"
             ],
             "css": [
-                "css/idcard.css"
+                "css/BVCard.css"
             ],
             "matches": [
                 "https://*.bilibili.com/*"
@@ -37,7 +37,7 @@
     "web_accessible_resources": [
         {
             "resources": [
-                "css/idcard.css",
+                "css/BVCard.css",
                 "scripts/markScript.js"
             ],
             "matches": [
