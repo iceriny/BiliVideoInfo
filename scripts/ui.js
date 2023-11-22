@@ -16,7 +16,7 @@ function getVideoCard(videoData) {
             <div id="danmaku" class="card-content-bottom-detail">弹幕数：${videoData.danmakuCount}</div>
             <div id="like" class="card-content-bottom-detail">点赞数：${videoData.likeCount}</div>
             <div id="coin" class="card-content-bottom-detail">硬币数：${videoData.coinCount}</div>
-            <div id="favorite" class="card-content-bottom-detail">收藏数：${videoData.favoriteCount}</div>
+            <div id="favorite" class="card-content-bottom-detail">收藏数：${videoData.favCount}</div>
             <div id="share" class="card-content-bottom-detail">分享量：${videoData.shareCount}</div>
             </div>
         </div>

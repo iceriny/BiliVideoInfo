@@ -1,0 +1,57 @@
+#biliSimple-share-button {
+    font-size: 13px;
+    margin: 0px 0px 0px 8px;
+    padding: 3px;
+    color: #fb7299;
+    background-color: #fafafa;
+    border-radius: 5px;
+
+    border-style: none;
+
+    transition: all 0.3s ease-in-out;
+}
+
+#biliSimple-share-button:hover {
+    background-color: #fb7299;
+    color: white;
+}
+
+
+#biliSimple-share-pop {
+    font-size: 20px;
+
+    position: absolute;
+    top: 8vh;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1020;
+
+    box-shadow: 0px 0px 15px 2px rgba(0, 0, 0, 0.356);
+
+    text-align:center;
+    vertical-align:middle;
+
+    color: white;
+    background-color: #fb7299;
+
+    padding: 20px;
+
+    border-radius: 10px;
+
+    animation: fadeInOut 2s ease-in-out 1; /* 使用动画 */
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}

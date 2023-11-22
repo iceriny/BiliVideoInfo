@@ -7,7 +7,7 @@ var myPageObserver = null;
  * @param {string} s - 视频链接
  * @returns {string} - 匹配到的视频的 BV 号，如果没有匹配到则返回 null
  */
-function getVideoIdFromLink(s) {
+function getTheVideoIdFromLink(s) {
     // 定义匹配 BV 号的正则表达式
     const regex = /\/video\/(BV[0-9a-zA-Z]{10})/;
     let userId = null;
@@ -25,7 +25,7 @@ function markLinks() {
         // 判断链接是否以BILIBILI_VIDEO_URL开头
         if (el.href.startsWith(THE_BILIBILI_VIDEO_URL)) {
             // 从链接中获取视频ID
-            let videoId = getVideoIdFromLink(el.href);
+            let videoId = getTheVideoIdFromLink(el.href);
             // 如果成功获取到视频ID，则设置属性bliVideoInfo-videoId为视频ID
             if (videoId) {
                 el.setAttribute("bliVideoInfo-videoId", videoId);

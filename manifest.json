@@ -14,10 +14,12 @@
                 "scripts/bilibiliAPI.js",
                 "scripts/md5.js",
                 "scripts/constants.js",
-                "scripts/ui.js"
+                "scripts/ui.js",
+                "scripts/uiForShare.js"
             ],
             "css": [
-                "css/BVCard.css"
+                "css/BVCard.css",
+                "css/BiliSimpleShare.css"
             ],
             "matches": [
                 "https://*.bilibili.com/*"
@@ -38,7 +40,8 @@
         {
             "resources": [
                 "css/BVCard.css",
-                "scripts/markScript.js"
+                "scripts/markScript.js",
+                "css/BiliSimpleShare.css"
             ],
             "matches": [
                 "https://*.bilibili.com/*"
