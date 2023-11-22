@@ -15,18 +15,30 @@ def set_manifest() -> str:
     
     package_name = packagerInfo['package_name']
     
-    input_text = input(f"当前简介:{data['description']}\n是否修改简介?\ny/n")
     
-    if input_text == 'y':
-        data['description'] = input("请输入简介:")
-        already_edited = True
+    packagerInfo_description = packagerInfo['description']
+    if data['description'] != packagerInfo_description:
+        input_text = input(f"当前简介:{data['description']}\n是否修改为packagerInfo.json中的简介?\ny/n\n")
+        if input_text == 'y':
+            data['description'] = packagerInfo_description
+            already_edited = True
+    else:
+        print('简介与packagerInfo.json中的简介一致，不用修改，如果需要修改，请修改packagerInfo.json中的简介')
     
-    input_text = input(f"当前版本号为:{data['version']}\n是否修改版本号?\ny/n")
-    if input_text == 'y':
-        data['version'] = input("请输入版本号:")
-        already_edited = True
+    
+    
+    
+    last_version = get_last_changelog(packagerInfo)['version']
+    if data['version'] != last_version:
+        input_text = input(f"当前清单中的版本号为:{data['version']}\n是否修改版本号为packagerInfo.json中最新的版本号({last_version})?\ny/n\n")
+        if input_text == 'y':
+            data['version'] = last_version
+            already_edited = True
+    else:
+        print('版本号与最后的Changelog版本号一致，不用修改，如果需要修改，请修改packagerInfo.json中的版本号')
+    
         
-    text_to_copy = f"{data['version']}\n\n{data['description']}\n\n{get_last_changelog(packagerInfo)}"
+    text_to_copy = f"{data['version']}\n\n{data['description']}\n\n{get_last_changelog(packagerInfo)['description']}"
     pyperclip.copy(text_to_copy)
     
     if already_edited:
@@ -38,9 +50,8 @@ def set_manifest() -> str:
 def get_last_changelog(data) -> str:
     changelog = data['changelog']
     last_changelog = changelog[0]
-    
-    result = last_changelog['description']
-    return result
+
+    return last_changelog
 
 def zip_to_package(package_name : str):
     files_list = [
