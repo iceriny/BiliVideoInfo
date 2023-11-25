@@ -102,7 +102,7 @@ class VideoProfileCard {
     }
 
 
-    upDate(dataObj) {
+    update(dataObj) {
         this.enable()
         this.data = dataObj
         if (this.el) {

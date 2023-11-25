@@ -1,34 +1,4 @@
 const url = 'https://api.bilibili.com/x/web-interface/view';
-/*
-const cookies = {
-    SESSDATA: 'your_sessdata_here'  // 替换为你的 SESSDATA，即登录状态的 Cookie
-};
-
-// 构建请求头，将 Cookie 加入其中
-const headers = new Headers();
-headers.append('Cookie', `SESSDATA=${cookies.SESSDATA}`);
-
-async function getVideoInfo(params_bvid) {
-    let params = {
-        bvid: params_bvid
-    };
-    let queryParams = new URLSearchParams(params);
-
-    try {
-        const response = await fetch(`${url}?${queryParams}`, { headers });
-
-        if (!response.ok) {
-            throw new Error(`请求失败：${response.status}`);
-        }
-
-        const videoInfo = await response.json();
-        return videoInfo; // 返回视频信息
-    } catch (error) {
-        console.error('发生错误:', error);
-        return null; // 或者返回其他你认为合适的默认值
-    }
-}
-*/
 
 // 使用 async/await 来获取 wbi_keys
 async function handleInfoWithWbi(targetInfo, toWhat = "") {
@@ -38,19 +8,22 @@ async function handleInfoWithWbi(targetInfo, toWhat = "") {
         bvid: (toWhat == 'share') ? targetInfo : targetInfo.videoId
         // 或者 aid: 1234567
     };
+
     try {
-        // 从 Chrome Storage 中获取数据
-        chrome.storage.sync.get(['wbi_keys'], async result => {
-            const wbiKeys = result.wbi_keys;
-            //console.log(wbiKeys); // 确认获取到数据
-
-            // 为参数进行 Wbi 签名
-            const signedParams = encWbi(params, wbiKeys.img_key, wbiKeys.sub_key);
-
-            // 构建请求 URL
-            const requestURL = `https://api.bilibili.com/x/web-interface/view/detail?${signedParams}`;
-
-
+        const wbiKeys = await new Promise((resolve, reject) => {
+            chrome.storage.sync.get(['wbi_keys'], (result) => {
+                if (chrome.runtime.lastError) {
+                    reject(chrome.runtime.lastError);
+                } else {
+                    resolve(result.wbi_keys);
+                }
+            });
+        });
+        // 为参数进行 Wbi 签名
+        const signedParams = encWbi(params, wbiKeys.img_key, wbiKeys.sub_key);
+        // 构建请求 URL
+        const requestURL = `https://api.bilibili.com/x/web-interface/view/detail?${signedParams}`;
+        try {
             // 发送请求
             const response = await fetch(requestURL, {
                 method: 'GET',
@@ -59,42 +32,43 @@ async function handleInfoWithWbi(targetInfo, toWhat = "") {
 
             if (!response.ok) {
                 throw new Error(`请求失败：${response.status}`);
-            }
-
-            const videoInfo = await response.json();
-            // 视频信息处理:
-            const videoCardInfo = {
-                url: `www.bilibili.com/video/${params.bvid}`,//链接
-                title: videoInfo.data.View.title,//标题
-                desc: videoInfo.data.View.desc,//简介
-                tags: videoInfo.data.Tags.map(item =>
-                    item.tag_name),//标签
-                viewCount: videoInfo.data.View.stat.view,//播放量
-                danmakuCount: videoInfo.data.View.stat.danmaku,//弹幕数
-                likeCount: videoInfo.data.View.stat.like,//点赞量
-                coinCount: videoInfo.data.View.stat.coin,//硬币数
-                favCount: videoInfo.data.View.stat.favorite,//收藏量
-                shareCount: videoInfo.data.View.stat.share,//分享量
-                type: VIDEO_TYPE_MAP[`${videoInfo.data.View.tid}`]//视频类型
-            }
-            if (toWhat == '') {
-                //videoProfileCard.
-                if (videoProfileCard) {
+            } else {
+                const videoInfo = await response.json();
+                // 视频信息处理:
+                const videoCardInfo = {
+                    url: `www.bilibili.com/video/${params.bvid}`,//链接
+                    title: videoInfo.data.View.title,//标题
+                    desc: videoInfo.data.View.desc,//简介
+                    tags: videoInfo.data.Tags.map(item =>
+                        item.tag_name),//标签
+                    viewCount: videoInfo.data.View.stat.view,//播放量
+                    danmakuCount: videoInfo.data.View.stat.danmaku,//弹幕数
+                    likeCount: videoInfo.data.View.stat.like,//点赞量
+                    coinCount: videoInfo.data.View.stat.coin,//硬币数
+                    favCount: videoInfo.data.View.stat.favorite,//收藏量
+                    shareCount: videoInfo.data.View.stat.share,//分享量
+                    type: VIDEO_TYPE_MAP[`${videoInfo.data.View.tid}`]//视频类型
+                }
+                if (videoProfileCard && toWhat == '') {
+                    //videoProfileCard.
                     const dataObj = {
                         videoCardInfo: videoCardInfo,
                         targetDOMRect: targetInfo.targetDOMRect
                     }
                     console.log(videoProfileCard)
-                    videoProfileCard.upDate(dataObj)
+                    videoProfileCard.update(dataObj)
+                }
+                //分享按钮更新
+                if (shareButton && toWhat == 'share') {
+                    await shareButton.update(videoCardInfo, shareButton.copyToClipboard());
                 }
             }
-            //分享按钮更新
-            if (shareButton && toWhat == 'share') {
-                shareButton.Update(videoCardInfo);
-            }
-        });
+            //});
+        } catch (error) {
+            console.log('发生错误:', error);
+        }
     } catch (error) {
-        console.log('发生错误:', error);
+        console.error('从chrome.storage获取发生错误:', error);
     }
 }
 
@@ -148,7 +122,7 @@ function showVideoInfo(event) {
     // 清除之前的定时器
     clearTimeout(hoverTimer);
     // 设置新的定时器，在1秒后调用函数
-    hoverTimer = setTimeout(() => {
+    hoverTimer = setTimeout(async () => {
         let target = getVideoTarget(event.target);
         if (target) {
             let videoId = target.getAttribute("bliVideoInfo-videoId");
@@ -166,9 +140,9 @@ function showVideoInfo(event) {
                 videoProfileCard.disable();
             });
 
-            handleInfoWithWbi(targetInfo);
+            await handleInfoWithWbi(targetInfo);
         }
-    }, 1000); // 设置1秒延迟
+    }, 800); // 设置0.8秒延迟
 }
 
 

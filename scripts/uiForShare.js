@@ -26,15 +26,19 @@ class ShareButton {
         this.target.appendChild(this.el);
     }
 
-    Update(data) {
+    async update(data, callback = null) {
         this.data = data;
-        this.formatVideoData();
+        await this.formatVideoData();
         this.shareText =
             `${this.data.title}\n类型：${this.data.type}\n简介：${this.data.desc}\n标签: ${this.getTagsText()}
 \n播放量：${this.data.viewCount}  硬币数：${this.data.coinCount}\n弹幕数：${this.data.danmakuCount}  收藏数：${this.data.favCount}\n点赞数：${this.data.likeCount}  分享量：${this.data.shareCount}
 \n分享链接：${this.data.url}`;
-    }
 
+        if (typeof callback === 'function') {
+            await callback();
+        }
+    }
+    /*
     upDataTarget = () => {
         this.getCount++;
         let videoInfoDetail = document.getElementById("viewbox_report");
@@ -53,6 +57,7 @@ class ShareButton {
             clearInterval(intervalId);
         }
     }
+    */
 
     getTagsText() {
         let tags = this.data.tags;
@@ -66,25 +71,32 @@ class ShareButton {
     async Click() {
         try {
             await callShareButton();
-            await navigator.clipboard.writeText(this.shareText);
-            this.popUps('文本已成功复制到剪贴板', 2000);
         } catch (err) {
             await navigator.clipboard.writeText(`uiForShare.js => Click() => ${err}\nhttps://github.com/iceriny/BiliVideoInfo/issues`);
             this.popUps(`复制到剪贴板时出错${err}\n请联系作者，联系地址与错误信息已经已复制到剪切板`, 2000);
         }
     }
 
-    formatVideoData() {
+    async copyToClipboard() {
+        if (this.shareText !== '') {
+            await navigator.clipboard.writeText(this.shareText);
+            this.popUps('文本已成功复制到剪贴板', 2000);
+        } else {
+            this.popUps('未获取到分享信息', 2000);
+        }
+    }
+
+    async formatVideoData() {
         const videoDataKeys = ['viewCount', 'danmakuCount', 'likeCount', 'coinCount', 'favCount', 'shareCount'];
 
         let maxLength = 0;
         for (const key of videoDataKeys) {
-            const stringValue = this.data[key].toString();
+            const stringValue =await this.data[key].toString();
             maxLength = Math.max(maxLength, stringValue.length);
         }
 
         for (const key of videoDataKeys) {
-            this.data[key] = this.data[key].toString().padStart(maxLength, " ");
+            this.data[key] =await this.data[key].toString().padStart(maxLength, " ");
         }
     }
 

@@ -5,7 +5,7 @@
     left: -1.5vw;
     top: 18vh;
 
-    font-size: 13px;
+    font-size: 5px;
     font-weight: bold;
     margin: 0px 0px 0px 8px;
     padding: 3px;
@@ -22,6 +22,8 @@
     transform: translateX(30%);
     width: 3vw;
     height: 3vw;
+
+    font-size: 15px;
 
     border-radius: 30%;
     background-color: #fb7299;
