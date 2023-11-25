@@ -1,20 +1,33 @@
 #biliSimple-share-button {
+    position: absolute;
+    width: 1.5vw;
+    height: 1.5vw;
+    left: -1.5vw;
+    top: 18vh;
+
     font-size: 13px;
+    font-weight: bold;
     margin: 0px 0px 0px 8px;
     padding: 3px;
-    color: #fb7299;
-    background-color: #fafafa;
-    border-radius: 5px;
+    color: #ffd9e4;
+    background-color: #ffd9e4;
+    border-radius: 50%;
 
-    border-style: none;
+    border: none;
 
     transition: all 0.3s ease-in-out;
 }
 
 #biliSimple-share-button:hover {
+    transform: translateX(30%);
+    width: 3vw;
+    height: 3vw;
+
+    border-radius: 30%;
     background-color: #fb7299;
     color: white;
 }
+
 
 
 #biliSimple-share-pop {
@@ -48,7 +61,7 @@
     20% {
         opacity: 1;
     }
-    50% {
+    60% {
         opacity: 1;
     }
     100% {

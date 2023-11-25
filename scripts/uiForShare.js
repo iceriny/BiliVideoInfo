@@ -1,28 +1,61 @@
 var shareButton = null;
+var titleObserver = null;
+
 
 class ShareButton {
-    constructor(videoInfoDetail) {
+    constructor() {
+        this.getCount = 0;
+
         this.data = {};
+        this.target = document.body;
+        this.shareText = '';
         this.el = document.createElement("button");
         this.el.id = 'biliSimple-share-button';
         this.el.type = 'button';
         this.el.innerText = '分享';
-        this.el.onclick = () => {
-            shareButton.Click();
+        this.el.onclick = async () => {
+            await this.Click();
         }
 
         //let videoInfoDetail = document.getElementById("arc_toolbar_report");
 
-        videoInfoDetail[0].appendChild(this.el);
+        //this.addShareButton();
+    }
+
+    addShareButton() {
+        this.target.appendChild(this.el);
     }
 
     Update(data) {
         this.data = data;
+        this.formatVideoData();
+        this.shareText =
+            `${this.data.title}\n类型：${this.data.type}\n简介：${this.data.desc}\n标签: ${this.getTagsText()}
+\n播放量：${this.data.viewCount}  硬币数：${this.data.coinCount}\n弹幕数：${this.data.danmakuCount}  收藏数：${this.data.favCount}\n点赞数：${this.data.likeCount}  分享量：${this.data.shareCount}
+\n分享链接：${this.data.url}`;
+    }
+
+    upDataTarget = () => {
+        this.getCount++;
+        let videoInfoDetail = document.getElementById("viewbox_report");
+
+        if (videoInfoDetail) {
+            videoInfoDetail = videoInfoDetail.getElementsByClassName('video-title');
+            if (videoInfoDetail.length > 0) {
+                this.target = videoInfoDetail[0];
+                this.addShareButton();
+                //callShareButton();
+            }
+        }
+        if (videoInfoDetail || this.getCount >= 10) {
+            this.getCount = 0;
+
+            clearInterval(intervalId);
+        }
     }
 
     getTagsText() {
         let tags = this.data.tags;
-        console.log(this.data);
         let tagsText = "";
         for (let i = 0; i < tags.length; i++) {
             tagsText += tags[i] + " ";
@@ -31,45 +64,36 @@ class ShareButton {
     }
 
     async Click() {
-        this.formatVideoData();
-        let shareText = `${this.data.title}
-类型：${this.data.type}
-简介：${this.data.desc}
-标签: ${this.getTagsText()}
-播放量：${this.data.viewCount}  硬币数：${this.data.coinCount}
-弹幕数：${this.data.danmakuCount}  收藏数：${this.data.favCount}
-点赞数：${this.data.likeCount}  分享量：${this.data.shareCount}
-分享链接：${this.data.url}`;
-
         try {
-            await navigator.clipboard.writeText(shareText);
-            this.popUps('文本已成功复制到剪贴板');
+            await callShareButton();
+            await navigator.clipboard.writeText(this.shareText);
+            this.popUps('文本已成功复制到剪贴板', 2000);
         } catch (err) {
-            this.popUps(`复制到剪贴板时出错${err}`);
+            await navigator.clipboard.writeText(`uiForShare.js => Click() => ${err}\nhttps://github.com/iceriny/BiliVideoInfo/issues`);
+            this.popUps(`复制到剪贴板时出错${err}\n请联系作者，联系地址与错误信息已经已复制到剪切板`, 2000);
         }
     }
 
     formatVideoData() {
         const videoDataKeys = ['viewCount', 'danmakuCount', 'likeCount', 'coinCount', 'favCount', 'shareCount'];
-    
+
         let maxLength = 0;
         for (const key of videoDataKeys) {
-            console.log(this.data)
             const stringValue = this.data[key].toString();
             maxLength = Math.max(maxLength, stringValue.length);
         }
-    
+
         for (const key of videoDataKeys) {
             this.data[key] = this.data[key].toString().padStart(maxLength, " ");
         }
     }
 
-    popUps(text) {
+    popUps(text, delay) {
         const showPopup = () => {
             pop.style.display = "flex";
             setTimeout(() => {
                 pop.style.display = "none";
-            }, 2000);
+            }, delay);
         };
 
         let pop = document.getElementById("biliSimple-share-button-pop");
@@ -82,16 +106,29 @@ class ShareButton {
 
         showPopup();
     }
-
-
 }
 
 
-window.addEventListener("load", function () {
 
-    let hoverTimer = setTimeout(() => {
-        let videoInfoDetail = document.getElementById("viewbox_report").getElementsByClassName('video-title');
-        shareButton = new ShareButton(videoInfoDetail);
-        console.log("\n创建按钮\n")
-    }, 3000); // 设置1秒延迟
+function setTitleObserver() {
+    // 创建一个MutationObserver对象，用于观察DOM的变化
+    titleObserver = new MutationObserver((mutationList, observer) => {
+        // 调用labelLinks函数对标签链接进行处理
+        shareButton.upDataTarget();
+    });
+
+    // 监听document.body元素及其子元素的变化
+    titleObserver.observe(document.body, {
+        childList: true,
+        subtree: true,
+    })
+}
+
+let intervalId = null;
+window.addEventListener("load", function () {
+    shareButton = new ShareButton();
+    if (shareButton) {
+        //shareButton.upDataTarget();
+        shareButton.addShareButton();
+    }
 });

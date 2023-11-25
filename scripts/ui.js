@@ -51,8 +51,9 @@ class VideoProfileCard {
 
         this.el = document.createElement("div");
         this.el.style.position = "absolute";
-        this.el.style.display = "none";
         this.el.style.zIndex = 1013
+
+        this.el.classList.add('none-display')
 
         document.body.appendChild(this.el);
 
@@ -62,14 +63,17 @@ class VideoProfileCard {
     disable() {
         this.enabled = false;
         if (this.el) {
-            this.el.style.display = "none";
+            this.enabled = false;
+            this.el.classList.remove('flex-display')
+            this.el.classList.add('none-display')
         }
     }
 
     enable() {
         if (!this.enabled) {
             this.enabled = true;
-            this.el.style.display = "flex";
+            this.el.classList.remove('none-display')
+            this.el.classList.add('flex-display')
         }
     }
 
