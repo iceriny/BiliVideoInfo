@@ -60,7 +60,7 @@ async function handleInfoWithWbi(targetInfo, toWhat = "") {
                 }
                 //分享按钮更新
                 if (shareButton && toWhat == 'share') {
-                    await shareButton.update(videoCardInfo, shareButton.copyToClipboard());
+                    await shareButton.update(videoCardInfo, ShareButton.copyToClipboard);
                 }
             }
             //});

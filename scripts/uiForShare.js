@@ -3,12 +3,13 @@ var titleObserver = null;
 
 
 class ShareButton {
+    static shareText = ''
     constructor() {
         this.getCount = 0;
 
         this.data = {};
         this.target = document.body;
-        this.shareText = '';
+        // this.shareText = '';
         this.el = document.createElement("button");
         this.el.id = 'biliSimple-share-button';
         this.el.type = 'button';
@@ -28,8 +29,8 @@ class ShareButton {
 
     async update(data, callback = null) {
         this.data = data;
-        await this.formatVideoData();
-        this.shareText =
+        this.formatVideoData();
+        ShareButton.shareText =
             `${this.data.title}\n类型：${this.data.type}\n简介：${this.data.desc}\n标签: ${this.getTagsText()}
 \n播放量：${this.data.viewCount}  硬币数：${this.data.coinCount}\n弹幕数：${this.data.danmakuCount}  收藏数：${this.data.favCount}\n点赞数：${this.data.likeCount}  分享量：${this.data.shareCount}
 \n分享链接：${this.data.url}`;
@@ -77,26 +78,26 @@ class ShareButton {
         }
     }
 
-    async copyToClipboard() {
-        if (this.shareText !== '') {
-            await navigator.clipboard.writeText(this.shareText);
+    static async copyToClipboard() {
+        if (ShareButton.shareText !== '') {
+            await navigator.clipboard.writeText(ShareButton.shareText);
             this.popUps('文本已成功复制到剪贴板', 2000);
         } else {
             this.popUps('未获取到分享信息', 2000);
         }
     }
 
-    async formatVideoData() {
+    formatVideoData() {
         const videoDataKeys = ['viewCount', 'danmakuCount', 'likeCount', 'coinCount', 'favCount', 'shareCount'];
 
         let maxLength = 0;
         for (const key of videoDataKeys) {
-            const stringValue =await this.data[key].toString();
+            const stringValue = this.data[key].toString();
             maxLength = Math.max(maxLength, stringValue.length);
         }
 
         for (const key of videoDataKeys) {
-            this.data[key] =await this.data[key].toString().padStart(maxLength, " ");
+            this.data[key] = this.data[key].toString().padStart(maxLength, " ");
         }
     }
 
