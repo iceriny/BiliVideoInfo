@@ -74,16 +74,16 @@ class ShareButton {
             await callShareButton();
         } catch (err) {
             await navigator.clipboard.writeText(`uiForShare.js => Click() => ${err}\nhttps://github.com/iceriny/BiliVideoInfo/issues`);
-            this.popUps(`复制到剪贴板时出错${err}\n请联系作者，联系地址与错误信息已经已复制到剪切板`, 2000);
+            ShareButton.popUps(`复制到剪贴板时出错${err}\n请联系作者，联系地址与错误信息已经已复制到剪切板`, 2000);
         }
     }
 
     static async copyToClipboard() {
         if (ShareButton.shareText !== '') {
             await navigator.clipboard.writeText(ShareButton.shareText);
-            this.popUps('文本已成功复制到剪贴板', 2000);
+            ShareButton.popUps('文本已成功复制到剪贴板', 2000);
         } else {
-            this.popUps('未获取到分享信息', 2000);
+            ShareButton.popUps('未获取到分享信息', 2000);
         }
     }
 
@@ -101,7 +101,7 @@ class ShareButton {
         }
     }
 
-    popUps(text, delay) {
+    static popUps(text, delay) {
         const showPopup = () => {
             pop.style.display = "flex";
             setTimeout(() => {
@@ -139,9 +139,12 @@ function setTitleObserver() {
 
 let intervalId = null;
 window.addEventListener("load", function () {
-    shareButton = new ShareButton();
-    if (shareButton) {
-        //shareButton.upDataTarget();
-        shareButton.addShareButton();
+    let currentURL = getVideoUrl();
+    if (currentURL.startsWith('https://www.bilibili.com/video')) {
+        shareButton = new ShareButton();
+        if (shareButton) {
+            //shareButton.upDataTarget();
+            shareButton.addShareButton();
+        }
     }
 });

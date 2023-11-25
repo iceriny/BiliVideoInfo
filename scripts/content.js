@@ -65,7 +65,7 @@ async function handleInfoWithWbi(targetInfo, toWhat = "") {
             }
             //});
         } catch (error) {
-            console.log('发生错误:', error);
+            console.error('发生错误:', error);
         }
     } catch (error) {
         console.error('从chrome.storage获取发生错误:', error);
