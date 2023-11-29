@@ -73,8 +73,11 @@ async function handleInfoWithWbi(targetInfo, toWhat = "") {
 }
 
 
+// 获取当前视频的URL地址
 function getVideoUrl() {
+    // 获取当前页面的URL地址
     var currentURL = window.location.href;
+    // 返回URL地址的前面部分（即去掉参数部分）
     return currentURL.split('?')[0];
 }
 
