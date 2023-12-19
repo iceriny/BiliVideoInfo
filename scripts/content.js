@@ -1,5 +1,11 @@
 const url = 'https://api.bilibili.com/x/web-interface/view';
 
+const isDebug = true;
+function myDebug(msg) {
+    if (isDebug) {
+        console.log(msg);
+    }
+}
 
 function getVideoTarget(target) {
     // 获取目标节点
@@ -17,10 +23,7 @@ function getVideoTarget(target) {
     return null; // 如果未找到符合条件的节点，则返回空
 }
 
-function updateTargetInfo(event) {
-    clearTimeout(hoverTimer);
-
-    let target = getVideoTarget(event.target);
+function updateTargetInfo(target) {
     if (target) {
         let videoId = target.getAttribute("bliVideoInfo-videoId");
         let targetDOMRect = target.getBoundingClientRect()
@@ -94,15 +97,46 @@ async function callAPI(targetInfo) {
 }
 let hoverTimer;
 function showVideoInfo() {
+    myDebug("开始显示视频信息");
     if (videoProfileCard) {
+        myDebug("显示卡片");
         videoProfileCard.enable();
     }
 }
-function cardHandle(event) {
-    const targetInfo = updateTargetInfo(event);
-    if (targetInfo) {
-        callAPI(targetInfo)
-            .then(data => {
+async function cardHandle(event) {
+    let target = getVideoTarget(event.target);
+    if (!target == true) {
+        myDebug("目标未找到");
+        return;
+    }
+
+    let isDisabled = false; // 标记是否已禁用
+
+    //对target注册鼠标离开事
+    target.addEventListener("mouseout", function () {
+        // 取消注册事件
+        target.removeEventListener("mouseout", arguments.callee);
+        // 调用禁用函数
+        videoProfileCard.disable();
+        isDisabled = true;
+        clearTimeout(hoverTimer);
+        hoverTimer = null;
+        myDebug("鼠标离开，取消计时器");
+    });
+
+    myDebug("找到目标，清理计时器，开始计时");
+    clearTimeout(hoverTimer);
+    let timerPromise = new Promise((resolve) => {
+        hoverTimer = setTimeout(() => {
+            resolve();
+            myDebug("计时结束");
+        }, 500);
+    });
+
+    const targetInfo = updateTargetInfo(target);
+    if (targetInfo && hoverTimer) {
+        await callAPI(targetInfo)
+            .then(async data => {
                 if (data && videoProfileCard) {
                     //console.log(data)
                     const dataObj = {
@@ -110,6 +144,11 @@ function cardHandle(event) {
                         targetDOMRect: targetInfo.targetDOMRect
                     }
                     videoProfileCard.update(dataObj)
+                    myDebug(`更新卡片数据: ${dataObj}`);
+                    await timerPromise;
+                    if (!isDisabled) { // 如果未禁用，则执行 showVideoInfo
+                        showVideoInfo();
+                    }
                 }
             })
             .catch(error => {
@@ -117,11 +156,9 @@ function cardHandle(event) {
             }
             )
     }
-    clearTimeout(hoverTimer);
-    hoverTimer = setTimeout(showVideoInfo, 800);
 }
 
-async function shareHandle(){
+async function shareHandle() {
     if (shareButton) {
         let currentURL = window.location.href.split('?')[0];
         let bvid = getVideoIdFromLink(currentURL);
@@ -130,7 +167,7 @@ async function shareHandle(){
             videoId: bvid
         }).then(async data => {
             if (data && shareButton) {
-                await shareButton.update(data, ShareButton.copyToClipboard);
+                await shareButton.update(data);
             }
         })
     }
@@ -155,6 +192,7 @@ function getVideoIdFromLink(s) {
 window.addEventListener("load", function () {
     // 当鼠标悬停在文档上时，调用showVideoInfo函数
     document.addEventListener("mouseover", cardHandle);
+
 
     // 添加markScript.js来对网站元素进行标记处理
     // 创建一个<script>元素

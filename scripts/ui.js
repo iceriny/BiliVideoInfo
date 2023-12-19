@@ -61,7 +61,6 @@ class VideoProfileCard {
     }
 
     disable() {
-        this.enabled = false;
         if (this.el) {
             this.enabled = false;
             this.el.classList.remove('flex-display')
@@ -74,6 +73,7 @@ class VideoProfileCard {
             this.enabled = true;
             this.el.classList.remove('none-display')
             this.el.classList.add('flex-display')
+            this.updateCursor(this.data.targetDOMRect)
         }
     }
 
@@ -82,8 +82,12 @@ class VideoProfileCard {
      * @param {DOMRect} targetDOMRect - 目标DOM元素的矩形信息
      */
     updateCursor(targetDOMRect) {
+        myDebug(this.el.scrollHeight)
+        myDebug(this.el.scrollWidth)
+        myDebug(this.el)
         const newTop = targetDOMRect.bottom + this.el.scrollHeight / 2 + window.scrollY + 10;
         const newLeft = targetDOMRect.right + 200 + window.scrollX;
+
 
         this.el.style.top = `${newTop}px`;
         this.el.style.left = `${newLeft}px`;
@@ -93,21 +97,23 @@ class VideoProfileCard {
         const viewportWidth = window.innerWidth;
 
         if (newTop + this.el.scrollHeight > viewportHeight) {
+            myDebug(`Top    ${newTop + this.el.scrollHeight} > ${viewportHeight} |||| this.el.scrollHeight == ${this.el.scrollHeight}`)
             this.el.style.top = `${viewportHeight - this.el.scrollHeight - 20}px`;
+            myDebug(`Top    ${this.el.style.top}`)
         }
 
         if (newLeft + this.el.scrollWidth > viewportWidth) {
+            myDebug(`Left   ${newLeft + this.el.scrollWidth} > ${viewportWidth} |||| this.el.scrollWidth == ${this.el.scrollWidth}`)
             this.el.style.left = `${viewportWidth - this.el.scrollWidth - 25}px`;
+            myDebug(`Left   ${this.el.style.left}`)
         }
     }
 
 
     update(dataObj) {
-        //this.enable()
         this.data = dataObj
         if (this.el) {
             this.el.innerHTML = getVideoCard(this.data.videoCardInfo)
-            this.updateCursor(this.data.targetDOMRect)
         }
     }
 }

@@ -27,17 +27,19 @@ class ShareButton {
         this.target.appendChild(this.el);
     }
 
-    async update(data, callback = null) {
+    async update(data) {
         this.data = data;
         this.formatVideoData();
         ShareButton.shareText =
             `${this.data.title}\n类型：${this.data.type}\n简介：${this.data.desc}\n标签: ${this.getTagsText()}
 \n播放量：${this.data.viewCount}  硬币数：${this.data.coinCount}\n弹幕数：${this.data.danmakuCount}  收藏数：${this.data.favCount}\n点赞数：${this.data.likeCount}  分享量：${this.data.shareCount}
 \n分享链接：${this.data.url}`;
-
+/*
         if (typeof callback === 'function') {
             await callback();
         }
+        */
+        await ShareButton.copyToClipboard();
     }
     /*
     upDataTarget = () => {
