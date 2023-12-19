@@ -1,43 +1,11 @@
 const url = 'https://api.bilibili.com/x/web-interface/view';
 
+// 使用 async/await 来获取 wbi_keys
+async function handleInfoWithWbi(targetInfo, toWhat = "") {
 
-function getVideoTarget(target) {
-    // 获取目标节点
-    let maxDepth = 5; // 定义最大深度为5
-    videoLink = target; // 将传入的参数作为初始节点
-    while (videoLink && maxDepth-- >= 0 && videoLink.getAttribute) {
-        // 循环遍历节点，直到节点为空或达到最大深度，且节点存在getAttribute方法
-        if (videoLink.getAttribute("bliVideoInfo-videoId")) {
-            // 如果节点具有属性"bliVideoInfo-videoId"，则返回该节点
-            return videoLink;
-        }
-        videoLink = videoLink.parentNode; // 将节点的父节点赋值给userLink
-    }
-
-    return null; // 如果未找到符合条件的节点，则返回空
-}
-
-function updateTargetInfo(event) {
-    clearTimeout(hoverTimer);
-
-    let target = getVideoTarget(event.target);
-    if (target) {
-        let videoId = target.getAttribute("bliVideoInfo-videoId");
-        let targetDOMRect = target.getBoundingClientRect()
-        let targetInfo = {
-            state: true,
-            videoId: videoId,
-            targetDOMRect: targetDOMRect
-        }
-        return targetInfo;
-    }
-    return null;
-}
-
-async function callAPI(targetInfo) {
     // 构建请求参数
     const params = {
-        bvid: targetInfo.videoId
+        bvid: (toWhat == 'share') ? targetInfo : targetInfo.videoId
         // 或者 aid: 1234567
     };
 
@@ -55,7 +23,6 @@ async function callAPI(targetInfo) {
         const signedParams = encWbi(params, wbiKeys.img_key, wbiKeys.sub_key);
         // 构建请求 URL
         const requestURL = `https://api.bilibili.com/x/web-interface/view/detail?${signedParams}`;
-
         try {
             // 发送请求
             const response = await fetch(requestURL, {
@@ -82,7 +49,19 @@ async function callAPI(targetInfo) {
                     shareCount: videoInfo.data.View.stat.share,//分享量
                     type: VIDEO_TYPE_MAP[`${videoInfo.data.View.tid}`]//视频类型
                 }
-                return videoCardInfo;
+                if (videoProfileCard && toWhat == '') {
+                    //videoProfileCard.
+                    const dataObj = {
+                        videoCardInfo: videoCardInfo,
+                        targetDOMRect: targetInfo.targetDOMRect
+                    }
+                    console.log(videoProfileCard)
+                    videoProfileCard.update(dataObj)
+                }
+                //分享按钮更新
+                if (shareButton && toWhat == 'share') {
+                    await shareButton.update(videoCardInfo, ShareButton.copyToClipboard);
+                }
             }
             //});
         } catch (error) {
@@ -92,50 +71,21 @@ async function callAPI(targetInfo) {
         console.error('从chrome.storage获取发生错误:', error);
     }
 }
-let hoverTimer;
-function showVideoInfo() {
-    if (videoProfileCard) {
-        videoProfileCard.enable();
-    }
-}
-function cardHandle(event) {
-    const targetInfo = updateTargetInfo(event);
-    if (targetInfo) {
-        callAPI(targetInfo)
-            .then(data => {
-                if (data && videoProfileCard) {
-                    //console.log(data)
-                    const dataObj = {
-                        videoCardInfo: data,
-                        targetDOMRect: targetInfo.targetDOMRect
-                    }
-                    videoProfileCard.update(dataObj)
-                }
-            })
-            .catch(error => {
-                console.error('发生错误:', error);
-            }
-            )
-    }
-    clearTimeout(hoverTimer);
-    hoverTimer = setTimeout(showVideoInfo, 800);
+
+
+function getVideoUrl() {
+    var currentURL = window.location.href;
+    return currentURL.split('?')[0];
 }
 
-async function shareHandle(){
+async function callShareButton() {
     if (shareButton) {
-        let currentURL = window.location.href.split('?')[0];
+        let currentURL = getVideoUrl();
         let bvid = getVideoIdFromLink(currentURL);
 
-        await callAPI({
-            videoId: bvid
-        }).then(async data => {
-            if (data && shareButton) {
-                await shareButton.update(data, ShareButton.copyToClipboard);
-            }
-        })
+        await handleInfoWithWbi(bvid, "share");
     }
 }
-
 /**
  * 从视频链接中获取视频的 BV 号
  * @param {string} s - 视频链接
@@ -151,12 +101,59 @@ function getVideoIdFromLink(s) {
     }
     return bvid;
 }
+
+function getVideoTarget(target) {
+    // 获取目标节点
+    let maxDepth = 5; // 定义最大深度为5
+    videoLink = target; // 将传入的参数作为初始节点
+    while (videoLink && maxDepth-- >= 0 && videoLink.getAttribute) {
+        // 循环遍历节点，直到节点为空或达到最大深度，且节点存在getAttribute方法
+        if (videoLink.getAttribute("bliVideoInfo-videoId")) {
+            // 如果节点具有属性"bliVideoInfo-videoId"，则返回该节点
+            return videoLink;
+        }
+        videoLink = videoLink.parentNode; // 将节点的父节点赋值给userLink
+    }
+
+    return null; // 如果未找到符合条件的节点，则返回空
+}
+let hoverTimer;
+function showVideoInfo(event) {
+    // 清除之前的定时器
+    clearTimeout(hoverTimer);
+    // 设置新的定时器，在1秒后调用函数
+    hoverTimer = setTimeout(async () => {
+        let target = getVideoTarget(event.target);
+        if (target) {
+            let videoId = target.getAttribute("bliVideoInfo-videoId");
+            let targetDOMRect = target.getBoundingClientRect()
+            let targetInfo = {
+                videoId: videoId,
+                targetDOMRect: targetDOMRect
+            }
+
+            //对target注册鼠标离开事
+            target.addEventListener("mouseout", function () {
+                // 取消注册事件
+                target.removeEventListener("mouseout", arguments.callee);
+                // 调用禁用函数
+                videoProfileCard.disable();
+            });
+
+            await handleInfoWithWbi(targetInfo);
+        }
+    }, 800); // 设置0.8秒延迟
+}
+
+
 // 加载网站脚本来为用户链接添加标签
 window.addEventListener("load", function () {
+    //向ShareButton发送消息
+    //setTimeout(callShareButton, 4000)
     // 当鼠标悬停在文档上时，调用showVideoInfo函数
-    document.addEventListener("mouseover", cardHandle);
+    document.addEventListener("mouseover", showVideoInfo);
 
-    // 添加markScript.js来对网站元素进行标记处理
+
     // 创建一个<script>元素
     var s = document.createElement('script');
     // 设置<script>元素的src属性为chrome.runtime.getURL('scripts/markScript.js')

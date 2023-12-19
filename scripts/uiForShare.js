@@ -71,7 +71,7 @@ class ShareButton {
 
     async Click() {
         try {
-            await callShareButton();
+            await shareHandle();
         } catch (err) {
             await navigator.clipboard.writeText(`uiForShare.js => Click() => ${err}\nhttps://github.com/iceriny/BiliVideoInfo/issues`);
             ShareButton.popUps(`复制到剪贴板时出错${err}\n请联系作者，联系地址与错误信息已经已复制到剪切板`, 2000);
@@ -139,7 +139,7 @@ function setTitleObserver() {
 
 let intervalId = null;
 window.addEventListener("load", function () {
-    let currentURL = getVideoUrl();
+    let currentURL = window.location.href.split('?')[0];
     if (currentURL.startsWith('https://www.bilibili.com/video')) {
         shareButton = new ShareButton();
         if (shareButton) {

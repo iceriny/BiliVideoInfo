@@ -103,13 +103,12 @@ class VideoProfileCard {
 
 
     update(dataObj) {
-        this.enable()
+        //this.enable()
         this.data = dataObj
         if (this.el) {
             this.el.innerHTML = getVideoCard(this.data.videoCardInfo)
             this.updateCursor(this.data.targetDOMRect)
         }
-
     }
 }
 var videoProfileCard = null;
