@@ -1,6 +1,6 @@
 const url = 'https://api.bilibili.com/x/web-interface/view';
 
-const isDebug = true;
+const isDebug = false;
 function myDebug(msg) {
     if (isDebug) {
         console.log(msg);
