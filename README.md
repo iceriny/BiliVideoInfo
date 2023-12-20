@@ -31,7 +31,7 @@
 ```
 
 ## 安装说明
-**注意** 因为拓展插件商店需要审核，所以可能会慢一些更新，一般发布页面更新之后的三五天商店的插件才会更新。
+**注意** - 因为拓展插件商店需要审核，所以可能会慢一些更新，一般发布页面更新之后的三五天商店的插件才会更新。
 - [Edge商店页面安装](https://microsoftedge.microsoft.com/addons/detail/mmjhpmlkpbepdhpmenbendaogedmldfo)
 - [Chrome商店安装](https://chromewebstore.google.com/detail/b%E7%AB%99%E8%A7%86%E9%A2%91%E4%BF%A1%E6%81%AF/bmnaooeokndapomoeojmanhboagadjgf?hl=zh-CN)
 - 手动安装，步骤如下 ↓
