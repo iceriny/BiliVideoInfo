@@ -54,4 +54,6 @@
      5. 选择第2步解压的文件夹
      6. 完成
 
-![exhibit2](https://github.com/iceriny/BiliVideoInfo/assets/54878570/2e6372a2-bb59-4962-bdf0-4166b867d0a2)
+
+![exhibit4](https://github.com/iceriny/BiliVideoInfo/assets/54878570/6f1710ee-e4ea-4005-91de-ad0798754ce1)
+![exhibit3](https://github.com/iceriny/BiliVideoInfo/assets/54878570/9b1627a9-0baa-4620-8ca3-2dac5dfa44b1)
