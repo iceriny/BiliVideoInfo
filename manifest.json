@@ -1,9 +1,15 @@
 {
     "manifest_version": 3,
     "name": "B站视频信息",
-    "version": "0.5.7",
+    "version": "1.0.0",
     "description": "可以预览B站视频信息, 播放量、点赞、投币、收藏、转发、等。\n\n还可以将视频信息和链接通过`具体的视频页面`的`左侧边缘处`的`分享按钮`复制到剪切板，方便分享。",
     "default_locale": "zh_CN",
+    "action": {
+        "default_popup": "./options/popup.html"
+    },
+    "permissions": [
+        "storage"
+    ],
     "icons": {
         "128": "img/logo.png"
     },
@@ -30,18 +36,14 @@
     "author": [
         {
             "name": "iceriny",
+            "email": "misssu0108@outlook.com",
             "url": "https://github.com/iceriny"
         }
-    ],
-    "permissions": [
-        "storage"
     ],
     "web_accessible_resources": [
         {
             "resources": [
-                "css/BVCard.css",
-                "scripts/markScript.js",
-                "css/BiliSimpleShare.css"
+                "scripts/markScript.js"
             ],
             "matches": [
                 "https://*.bilibili.com/*"

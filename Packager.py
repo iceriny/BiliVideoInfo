@@ -58,6 +58,7 @@ def zip_to_package(package_name : str):
         ".\\css",
         ".\\img",
         ".\\scripts",
+        ".\\options",
         ".\\manifest.json",
         ".\\_locales",
     ]

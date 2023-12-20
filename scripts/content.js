@@ -1,6 +1,16 @@
 const url = 'https://api.bilibili.com/x/web-interface/view';
 
-const isDebug = false;
+let isDebug = false;
+let delayTime = 500;
+
+chrome.storage.sync.get('KeyForDelayTime', function (result) {
+    if (result.KeyForDelayTime) {
+        delayTime = result.KeyForDelayTime;
+    } else {
+        delayTime = 500;
+    }
+});
+
 function myDebug(msg) {
     if (isDebug) {
         console.log(msg);
@@ -103,8 +113,13 @@ function showVideoInfo() {
         videoProfileCard.enable();
     }
 }
+/**
+ * 卡片处理函数
+ * 
+ * @param {Event} event - 事件对象
+ */
 async function cardHandle(event) {
-    let target = getVideoTarget(event.target);
+    let target = getVideoTarget(event.target); // 获取视频目标
     if (!target == true) {
         myDebug("目标未找到");
         return;
@@ -112,7 +127,7 @@ async function cardHandle(event) {
 
     let isDisabled = false; // 标记是否已禁用
 
-    //对target注册鼠标离开事
+    // 对target注册鼠标离开事件
     target.addEventListener("mouseout", function () {
         // 取消注册事件
         target.removeEventListener("mouseout", arguments.callee);
@@ -130,24 +145,23 @@ async function cardHandle(event) {
         hoverTimer = setTimeout(() => {
             resolve();
             myDebug("计时结束");
-        }, 500);
+        }, delayTime);
     });
 
-    const targetInfo = updateTargetInfo(target);
+    const targetInfo = updateTargetInfo(target); // 更新目标信息
     if (targetInfo && hoverTimer) {
-        await callAPI(targetInfo)
+        await callAPI(targetInfo) // 调用API
             .then(async data => {
                 if (data && videoProfileCard) {
-                    //console.log(data)
                     const dataObj = {
                         videoCardInfo: data,
                         targetDOMRect: targetInfo.targetDOMRect
                     }
-                    videoProfileCard.update(dataObj)
+                    videoProfileCard.update(dataObj); // 更新卡片数据
                     myDebug(`更新卡片数据: ${dataObj}`);
                     await timerPromise;
-                    if (!isDisabled) { // 如果未禁用，则执行 showVideoInfo
-                        showVideoInfo();
+                    if (!isDisabled) {
+                        showVideoInfo(); // 显示视频信息
                     }
                 }
             })
@@ -158,16 +172,19 @@ async function cardHandle(event) {
     }
 }
 
+/**
+ * 分享处理函数
+ */
 async function shareHandle() {
-    if (shareButton) {
-        let currentURL = window.location.href.split('?')[0];
-        let bvid = getVideoIdFromLink(currentURL);
+    if (shareButton) { // 如果存在分享按钮
+        let currentURL = window.location.href.split('?')[0]; // 获取当前URL
+        let bvid = getVideoIdFromLink(currentURL); // 获取视频ID
 
-        await callAPI({
+        await callAPI({ // 调用API
             videoId: bvid
-        }).then(async data => {
-            if (data && shareButton) {
-                await shareButton.update(data);
+        }).then(async data => { // 处理API返回的数据
+            if (data && shareButton) { // 如果数据存在且分享按钮存在
+                await shareButton.update(data); // 更新分享按钮
             }
         })
     }
@@ -188,8 +205,19 @@ function getVideoIdFromLink(s) {
     }
     return bvid;
 }
+
+function updateStage() {
+    chrome.runtime.sendMessage({ KeyForIsDebug: isDebug, KeyForDelayTime: delayTime });
+    myDebug("信息传递...")
+    chrome.storage.sync.set({ KeyForIsDebug: isDebug, KeyForDelayTime: delayTime }, function () {
+        myDebug("信息储存:...")
+    });
+    myDebug({ KeyForIsDebug: isDebug, KeyForDelayTime: delayTime })
+}
 // 加载网站脚本来为用户链接添加标签
 window.addEventListener("load", function () {
+    updateStage();
+
     // 当鼠标悬停在文档上时，调用showVideoInfo函数
     document.addEventListener("mouseover", cardHandle);
 
@@ -203,4 +231,24 @@ window.addEventListener("load", function () {
     s.onload = function () { this.remove(); };
     // 将<script>元素添加到文档头部或文档文档根元素中
     (document.head || document.documentElement).appendChild(s);
+
+    // 监听来自弹出式页面的消息
+    chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+        if (request.isDebug === true) {
+            console.log("调试模式打开")
+            isDebug = true;
+            updateStage();
+
+        };
+        if (request.isDebug === false) {
+            console.log("调试模式关闭")
+            isDebug = false;
+            updateStage();
+        };
+        if (request.haveDelayTime) {
+            delayTime = request.delayTime;
+            myDebug(`request.delayTime: ${request.delayTime}\n延迟事件输入事件: ${delayTime}`)
+            updateStage();
+        }
+    });
 });

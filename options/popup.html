@@ -1,0 +1,39 @@
+<html>
+
+<head>
+  <title>BVCard</title>
+  <meta charset="UTF-8">
+  <script src="popup.js"></script>
+  <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+  <div class="all-content flexbox-c">
+    <div class="title">设置面板</div>
+    <div id="content" class="flexbox-c">
+      <div class="item flexbox-r">
+        <label class="option-label" for="isDebug">调试模式:</label>
+        <div class="toggle-switch">
+          <input class="toggle-input" id="isDebug" type="checkbox">
+          <label class="toggle-label" for="isDebug"></label>
+        </div>
+      </div>
+
+      <div class="item input-group">
+        <input id="delayTime" required="" type="number" min="0" max="10000" autocomplete="off" class="input">
+        <label id="delayTimeLabel" class="user-label">延迟时间(ms)</label>
+      </div>
+
+    </div>
+    <div id="footer" class="flexbox-r">
+      <button id="saveBtn" class="learn-more">
+        <span class="circle" aria-hidden="true">
+          <span class="icon arrow"></span>
+        </span>
+        <span class="button-text">保存</span>
+      </button>
+    </div>
+  </div>
+</body>
+
+</html>

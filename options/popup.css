@@ -1,0 +1,241 @@
+html {
+    height: 250px;
+}
+.all-content {
+    position: relative;
+    color: rgb(73, 73, 73);
+    padding: 1.5rem;
+    width: 16rem;
+    font-size: 16px;
+    
+}
+
+.flexbox-c {
+    display: flex;
+    flex-direction: column;
+    /* 将主轴方向设置为竖向 */
+}
+
+.flexbox-r {
+    display: flex;
+    flex-direction: row;
+    /* 将主轴方向设置为横向 */
+}
+
+.title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+#content {
+    margin: 10px 10px;
+}
+
+.item {
+    margin: 10px;
+}
+
+/*开关*/
+.option-label {
+    margin: 10px;
+}
+
+/* Genel stil */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+
+    margin: 19px;
+}
+
+/* Giriş stil */
+.toggle-switch .toggle-input {
+    display: none;
+}
+
+/* Anahtarın stilinin etrafındaki etiketin stil */
+.toggle-switch .toggle-label {
+    position: absolute;
+
+    width: 40px;
+    height: 24px;
+    background-color: #ffe2f1;
+    border-radius: 34px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* Anahtarın yuvarlak kısmının stil */
+.toggle-switch .toggle-label::before {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    background-color: #fff;
+    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s;
+}
+
+/* Anahtarın etkin hale gelmesindeki stil değişiklikleri */
+.toggle-switch .toggle-input:checked+.toggle-label {
+    background-color: #fb7299;
+}
+
+.toggle-switch .toggle-input:checked+.toggle-label::before {
+    transform: translateX(20px);
+}
+
+/* Light tema */
+.toggle-switch.light .toggle-label {
+    background-color: #BEBEBE;
+}
+
+.toggle-switch.light .toggle-input:checked+.toggle-label {
+    background-color: #9B9B9B;
+}
+
+.toggle-switch.light .toggle-input:checked+.toggle-label::before {
+    transform: translateX(6px);
+}
+
+/* Dark tema */
+.toggle-switch.dark .toggle-label {
+    background-color: #4B4B4B;
+}
+
+.toggle-switch.dark .toggle-input:checked+.toggle-label {
+    background-color: #717171;
+}
+
+.toggle-switch.dark .toggle-input:checked+.toggle-label::before {
+    transform: translateX(16px);
+}
+
+/*输入框*/
+.input-group {
+    position: relative;
+}
+
+.input {
+    border: solid 1.5px #9e9e9e;
+    border-radius: 1rem;
+    background: none;
+    padding: 0.5rem;
+    font-size: 1rem;
+    width: 13rem;
+    color: #4a4a4a;
+    transition: border 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.user-label {
+    position: absolute;
+    left: 15px;
+    color: #858585;
+    pointer-events: none;
+    transform: translateY(0.5rem);
+    transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.input:focus,
+input:valid {
+    outline: none;
+    border: 1.5px solid #fb7299;
+}
+
+.input:focus~label,
+input:valid~label {
+    transform: translateY(-50%) scale(0.8);
+    background-color: #ffffff;
+    padding: 0 .2em;
+    color: #fb7299;
+}
+
+/* 按钮*/
+button {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    outline: none;
+    border: 0;
+    vertical-align: middle;
+    text-decoration: none;
+    background: transparent;
+    padding: 0;
+    font-size: inherit;
+    font-family: inherit;
+}
+
+button.learn-more {
+    width: 15rem;
+    height: auto;
+}
+
+button.learn-more .circle {
+    transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+    position: relative;
+    display: block;
+    margin: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    background: #fb7299;
+    border-radius: 1.625rem;
+}
+
+button.learn-more .circle .icon {
+    transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    background: #fff;
+}
+
+button.learn-more .circle .icon.arrow {
+    transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+    left: 0.4rem;
+    width: 0.7rem;
+    height: 0.125rem;
+    background: none;
+}
+
+button.learn-more .circle .icon.arrow::before {
+    position: absolute;
+    content: "";
+    top: -0.29rem;
+    right: 0.0625rem;
+    width: 0.625rem;
+    height: 0.625rem;
+    border-top: 0.125rem solid #fff;
+    border-right: 0.125rem solid #fff;
+    transform: rotate(45deg);
+}
+
+button.learn-more .button-text {
+    transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+    position: absolute;
+    top: 0;
+    left: 40px;
+    color: #fb7299;
+    font-weight: 700;
+    line-height: 1.6;
+    
+    text-transform: uppercase;
+}
+
+button:hover .circle {
+    width: 100%;
+}
+
+button:hover .circle .icon.arrow {
+    background: #fff;
+    transform: translate(1rem, 0);
+}
+
+button:hover .button-text {
+    color: #fff;
+    left: 110px;
+}
