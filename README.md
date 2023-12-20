@@ -55,5 +55,5 @@
      6. 完成
 
 
-![exhibit4](https://github.com/iceriny/BiliVideoInfo/assets/54878570/6f1710ee-e4ea-4005-91de-ad0798754ce1)
-![exhibit3](https://github.com/iceriny/BiliVideoInfo/assets/54878570/9b1627a9-0baa-4620-8ca3-2dac5dfa44b1)
+<img src="https://github.com/iceriny/BiliVideoInfo/assets/54878570/9b1627a9-0baa-4620-8ca3-2dac5dfa44b1" width="600" >
+<img src="https://github.com/iceriny/BiliVideoInfo/assets/54878570/6f1710ee-e4ea-4005-91de-ad0798754ce1" width="600" >
