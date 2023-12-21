@@ -1,8 +1,8 @@
 import json
 import zipfile
 import os
-# 三方输出到剪切板块
-import pyperclip
+
+import pyperclip # 三方输出到剪切板块
 
 
 def set_manifest() -> str:
