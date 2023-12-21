@@ -1,14 +1,21 @@
 const url = 'https://api.bilibili.com/x/web-interface/view';
+const settingItemsKeys = ['KeyForIsDebug', 'KeyForDelayTime']
+
 
 let isDebug = false;
 let delayTime = 500;
 
-chrome.storage.sync.get('KeyForDelayTime', function (result) {
+chrome.storage.sync.get(settingItemsKeys, function (result) {
     if (result.KeyForDelayTime) {
         delayTime = result.KeyForDelayTime;
     } else {
         delayTime = 500;
     }
+    if (result.KeyForIsDebug) {
+        isDebug = true;
+    } else {
+        isDebug = false;
+    };
 });
 
 function myDebug(msg) {
@@ -212,7 +219,6 @@ function updateStage() {
     chrome.storage.sync.set({ KeyForIsDebug: isDebug, KeyForDelayTime: delayTime }, function () {
         myDebug("信息储存:...")
     });
-    myDebug({ KeyForIsDebug: isDebug, KeyForDelayTime: delayTime })
 }
 // 加载网站脚本来为用户链接添加标签
 window.addEventListener("load", function () {
@@ -238,7 +244,6 @@ window.addEventListener("load", function () {
             console.log("调试模式打开")
             isDebug = true;
             updateStage();
-
         };
         if (request.isDebug === false) {
             console.log("调试模式关闭")

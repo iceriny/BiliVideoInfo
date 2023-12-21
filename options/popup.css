@@ -133,6 +133,7 @@ html {
 
 .user-label {
     position: absolute;
+    font-size: 0.9rem;
     left: 15px;
     color: #858585;
     pointer-events: none;

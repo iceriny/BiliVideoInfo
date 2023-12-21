@@ -14,6 +14,9 @@ class ShareButton {
         this.el.id = 'biliSimple-share-button';
         this.el.type = 'button';
         this.el.innerText = '分享';
+        this.el.style.cssText = `
+        left: -1vw;
+        top: 18vh;`
         this.el.onclick = async () => {
             await this.Click();
         }
@@ -34,34 +37,8 @@ class ShareButton {
             `${this.data.title}\n类型：${this.data.type}\n简介：${this.data.desc}\n标签: ${this.getTagsText()}
 \n播放量：${this.data.viewCount}  硬币数：${this.data.coinCount}\n弹幕数：${this.data.danmakuCount}  收藏数：${this.data.favCount}\n点赞数：${this.data.likeCount}  分享量：${this.data.shareCount}
 \n分享链接：${this.data.url}`;
-/*
-        if (typeof callback === 'function') {
-            await callback();
-        }
-        */
         await ShareButton.copyToClipboard();
     }
-    /*
-    upDataTarget = () => {
-        this.getCount++;
-        let videoInfoDetail = document.getElementById("viewbox_report");
-
-        if (videoInfoDetail) {
-            videoInfoDetail = videoInfoDetail.getElementsByClassName('video-title');
-            if (videoInfoDetail.length > 0) {
-                this.target = videoInfoDetail[0];
-                this.addShareButton();
-                //callShareButton();
-            }
-        }
-        if (videoInfoDetail || this.getCount >= 10) {
-            this.getCount = 0;
-
-            clearInterval(intervalId);
-        }
-    }
-    */
-
     getTagsText() {
         let tags = this.data.tags;
         let tagsText = "";
