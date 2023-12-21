@@ -31,8 +31,10 @@
 ```
 
 ## 安装说明
-- 我发现打包出来的crx文件现在不能本地安装了(很困难)，所以=>
-- 因为Edge和Chrome的开发者资格有点难搞，没有上传到相应的商店，所以直接提供压缩包，解压后直接导入即可。步骤如下:
+**注意** - 因为拓展插件商店需要审核，所以可能会慢一些更新，一般发布页面更新之后的三五天商店的插件才会更新。
+- [Edge商店页面安装](https://microsoftedge.microsoft.com/addons/detail/mmjhpmlkpbepdhpmenbendaogedmldfo)
+- [Chrome商店安装](https://chromewebstore.google.com/detail/b%E7%AB%99%E8%A7%86%E9%A2%91%E4%BF%A1%E6%81%AF/bmnaooeokndapomoeojmanhboagadjgf?hl=zh-CN)
+- 手动安装，步骤如下 ↓
 ### 具体步骤:
 1. 下载[发布页面]("https://github.com/iceriny/BiliVideoInfo/releases")的压缩包("BiliVideoInfo.zip")
 2. 解压到一个自定义永久位置
@@ -54,4 +56,6 @@
      5. 选择第2步解压的文件夹
      6. 完成
 
-![exhibit2](https://github.com/iceriny/BiliVideoInfo/assets/54878570/2e6372a2-bb59-4962-bdf0-4166b867d0a2)
+
+<img src="https://github.com/iceriny/BiliVideoInfo/assets/54878570/9b1627a9-0baa-4620-8ca3-2dac5dfa44b1" width="600" >
+<img src="https://github.com/iceriny/BiliVideoInfo/assets/54878570/6f1710ee-e4ea-4005-91de-ad0798754ce1" width="600" >
